@@ -115,7 +115,7 @@
                     <asp:Label ID="Label4" runat="server" BorderStyle="Solid" BorderWidth="2px" CssClass="auto-style6" Text="Delete Vehicle with ID: "></asp:Label>
 &nbsp;
                     <asp:TextBox ID="tbxDelete" runat="server" Height="25px"></asp:TextBox>
-                </td>
+&nbsp;</td>
                 <td class="auto-style7">
                     <asp:Button ID="btnDelete" runat="server" BorderStyle="Solid" CssClass="auto-style12" Text="Delete" />
                 </td>
