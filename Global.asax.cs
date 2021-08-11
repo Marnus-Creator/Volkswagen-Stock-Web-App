@@ -11,6 +11,10 @@ namespace Volkswagen_Stock_Web_App
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
+        void Session_Start(object sender, EventArgs e)
+        {
+            Response.Redirect("~/default.aspx");
+        }
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
