@@ -22,7 +22,7 @@ namespace Volkswagen_Stock_Web_App
         String BodyType = "";
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Display();
         }
 
         public void Insert(string Model, string BodyType, decimal Price)
@@ -43,11 +43,16 @@ namespace Volkswagen_Stock_Web_App
 
                 con.Close();
             }
+            catch (System.FormatException sfe)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + "Please Populate All Text Boxes!" + "');", true);
+                
+            }
             catch
             {
                 lblEmptyCart.Text = "Sorry, Cannot add";
             }
-
+            
         }
 
         protected void btnRemove_Click(object sender, EventArgs e)
@@ -78,40 +83,57 @@ namespace Volkswagen_Stock_Web_App
         //Fetch Button
         protected void Button1_Click(object sender, EventArgs e)
         {
-            string FetchID = tbxFetch.Text;
-
-            con = new SqlConnection(connstr);
-            con.Open();
-
-            string sql_Stock = "SELECT * FROM StockTable WHERE VehicleID = @FetchID";
-
-            com = new SqlCommand(sql_Stock, con);
-            com.Parameters.AddWithValue("@FetchID", int.Parse(FetchID));
             
-            SqlDataReader reader = com.ExecuteReader();
-            if(reader.HasRows)
+            try
             {
-                while (reader.Read())
+                string FetchID = tbxFetch.Text;
+                tbxFetch.Enabled = false;
+
+                con = new SqlConnection(connstr);
+                con.Open();
+
+                string sql_Stock = "SELECT * FROM StockTable WHERE VehicleID = @FetchID";
+
+                com = new SqlCommand(sql_Stock, con);
+                com.Parameters.AddWithValue("@FetchID", int.Parse(FetchID));
+
+                SqlDataReader reader = com.ExecuteReader();
+                if (reader.HasRows)
                 {
-                    tbxModelFetch.Text = reader.GetString(1);
-                    tbxBtypeFetch.Text = reader.GetString(2);
-                    tbxPriceFetch.Text =  reader.GetDecimal(3).ToString();
-                   
+                    while (reader.Read())
+                    {
+                        tbxModelFetch.Text = reader.GetString(1);
+                        tbxBtypeFetch.Text = reader.GetString(2);
+                        tbxPriceFetch.Text = reader.GetDecimal(3).ToString();
+
+                    }
+
                 }
-                
+                else
+                {
+                    lblEmptyCart.Text = "Could not fetch vehicle details";
+                    tbxFetch.Enabled = true;
+                }
+
+                con.Close();
             }
-            else
+            catch(System.FormatException sfe)
             {
-                lblEmptyCart.Text = "Could not fetch vehicle details";
+                ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + "Please Populate All Text Boxes!" + "');", true);
+                tbxFetch.Enabled = true;
             }
 
-            con.Close();
+            
 
         }
         protected void btnUpdate_Click(object sender, EventArgs e)
         {
-            con = new SqlConnection(connstr);
+            try
+            {
+
             
+            con = new SqlConnection(connstr);
+            tbxFetch.Enabled = false;
 
             string updateStatement = "Update StockTable set Model = @model, BodyType=@BType, Price=@price where VehicleID=@id";
             string id = tbxFetch.Text;
@@ -139,7 +161,15 @@ namespace Volkswagen_Stock_Web_App
             GridView1.DataSource = dset;
             GridView1.DataBind();
 
+            tbxFetch.Enabled = true;
+
             con.Close();
+            }
+            catch (System.FormatException sfe)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + "Please Populate All Text Boxes!" + "');", true);
+                tbxFetch.Enabled = true;
+            }
         }
 
         /*string Model, string BodyType, decimal Price
@@ -150,13 +180,21 @@ namespace Volkswagen_Stock_Web_App
 
         protected void btnAdd_Click(object sender, EventArgs e)
         {
-            Price = decimal.Parse(tbxPrice.Text);
-            Model = tbxModel.Text;
-            BodyType = tbxBType.Text;
+            try
+            {
+                Price = decimal.Parse(tbxPrice.Text);
+                Model = tbxModel.Text;
+                BodyType = tbxBType.Text;
 
-            
-            Insert(Model, BodyType, Price);
-            Display();
+
+                Insert(Model, BodyType, Price);
+                Display();
+            }
+            catch (System.FormatException sfe)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + "Please Populate All Text Boxes!" + "');", true);
+                
+            }
         }
 
         protected void btnDelete_Click(object sender, EventArgs e)
