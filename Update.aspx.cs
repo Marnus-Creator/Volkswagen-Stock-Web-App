@@ -176,6 +176,7 @@ namespace Volkswagen_Stock_Web_App
         decimal Price = 0;
         String Model = "";
         String BodyType = "";
+
         */
 
         protected void btnAdd_Click(object sender, EventArgs e)
