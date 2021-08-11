@@ -27,10 +27,10 @@ namespace Volkswagen_Stock_Web_App
 
         public void Insert(string Model, string BodyType, decimal Price)
         {
-            /*
+            
             try
             {
-                string insert_query = "INSERT INTO StockTable VALUES(@Model,@BodyType,@Price(R))";
+                string insert_query = "INSERT INTO StockTable VALUES(@Model,@BodyType,@Price)";
 
                 con = new SqlConnection(connstr);
                 con.Open();
@@ -38,7 +38,7 @@ namespace Volkswagen_Stock_Web_App
                 com = new SqlCommand(insert_query, con);
                 com.Parameters.AddWithValue("@Model", Model);
                 com.Parameters.AddWithValue("@BodyType", BodyType);
-                com.Parameters.AddWithValue("@Price(R)", Price);
+                com.Parameters.AddWithValue("@Price", Price);
                 com.ExecuteNonQuery();
 
                 con.Close();
@@ -46,19 +46,14 @@ namespace Volkswagen_Stock_Web_App
             catch
             {
                 lblEmptyCart.Text = "Sorry, Cannot add";
-            }*/
-            string insert_query = "INSERT INTO StockTable VALUES(@Model,@BodyType,@Price)";
+            }
 
-            con = new SqlConnection(connstr);
-            con.Open();
+        }
 
-            com = new SqlCommand(insert_query, con);
-            com.Parameters.AddWithValue("@Model", Model);
-            com.Parameters.AddWithValue("@BodyType", BodyType);
-            com.Parameters.AddWithValue("@Price", Price);
-            com.ExecuteNonQuery();
+        protected void btnRemove_Click(object sender, EventArgs e)
+        {
+            
 
-            con.Close();
         }
 
         private void Display()
@@ -114,6 +109,39 @@ namespace Volkswagen_Stock_Web_App
             
             Insert(Model, BodyType, Price);
             Display();
+        }
+
+        protected void btnDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string delete_query = "DELETE FROM StockTable WHERE VehicleID = '" + tbxDelete.Text + "'";
+                con = new SqlConnection(connstr);
+                con.Open();
+                com = new SqlCommand(delete_query, con);
+                com.ExecuteNonQuery();
+                con.Close();
+            }
+            catch
+            {
+                lblEmptyCart.Text = "Sorry, cannot remove";
+            }
+
+            con = new SqlConnection(connstr);
+            con.Open();
+
+            string sql_Stock = "SELECT * FROM StockTable";
+
+            dset = new DataSet();
+            adapt = new SqlDataAdapter();
+            com = new SqlCommand(sql_Stock, con);
+            adapt.SelectCommand = com;
+            adapt.Fill(dset);
+
+            GridView1.DataSource = dset;
+            GridView1.DataBind();
+
+            con.Close();
         }
     }
 }
