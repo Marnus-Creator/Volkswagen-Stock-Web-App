@@ -62,6 +62,13 @@
         .auto-style15 {
             height: 48px;
         }
+        .auto-style17 {
+            color: #000066;
+            font-size: large;
+        }
+        .auto-style18 {
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -124,8 +131,24 @@
                 <td class="auto-style8"><strong>
                     <asp:Label ID="lblUpdate" runat="server" BorderStyle="Solid" CssClass="auto-style6" Text="Update All Stock: "></asp:Label>
                     </strong></td>
-                <td class="auto-style10">&nbsp;</td>
-                <td>
+                <td class="auto-style10">
+                    <asp:Label ID="Label5" runat="server" BorderStyle="Solid" BorderWidth="2px" CssClass="auto-style6" Text="At ID: "></asp:Label>
+&nbsp;
+                    <asp:TextBox ID="tbxFetch" runat="server" Height="25px"></asp:TextBox>
+                    <br />
+                    <br />
+                    <asp:Label ID="Label6" runat="server" BorderStyle="Solid" BorderWidth="2px" CssClass="auto-style6" Text="Model"></asp:Label>
+                    <strong>&nbsp;
+                    <asp:TextBox ID="tbxModelFetch" runat="server" Height="25px"></asp:TextBox>
+                    </strong>&nbsp;<asp:Label ID="Label7" runat="server" BorderStyle="Solid" BorderWidth="2px" CssClass="auto-style6" Text="Body Type"></asp:Label>
+&nbsp;<asp:TextBox ID="tbxBtypeFetch" runat="server" Height="25px"></asp:TextBox>
+                    <strong>&nbsp;</strong><asp:Label ID="Label8" runat="server" BorderStyle="Solid" BorderWidth="2px" CssClass="auto-style6" Text="Price"></asp:Label>
+                    <strong>&nbsp;<asp:TextBox ID="tbxPriceFetch" runat="server" Height="25px"></asp:TextBox>
+                    </strong></td>
+                <td class="auto-style18">
+                    <asp:Button ID="Button1" runat="server" BorderStyle="Solid" CssClass="auto-style17" OnClick="Button1_Click" Text="Get Stock" />
+                    <br />
+                    <br />
                     <asp:Button ID="btnUpdate" runat="server" BorderStyle="Solid" CssClass="auto-style12" OnClick="btnUpdate_Click" Text="Update" />
                 </td>
             </tr>

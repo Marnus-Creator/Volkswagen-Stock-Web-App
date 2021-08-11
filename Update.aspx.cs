@@ -74,14 +74,62 @@ namespace Volkswagen_Stock_Web_App
 
             con.Close();
         }
-                
-        protected void btnUpdate_Click(object sender, EventArgs e)
+
+        //Fetch Button
+        protected void Button1_Click(object sender, EventArgs e)
         {
+            string FetchID = tbxFetch.Text;
+
             con = new SqlConnection(connstr);
             con.Open();
 
+            string sql_Stock = "SELECT * FROM StockTable WHERE VehicleID = @FetchID";
+
+            com = new SqlCommand(sql_Stock, con);
+            com.Parameters.AddWithValue("@FetchID", int.Parse(FetchID));
+            
+            SqlDataReader reader = com.ExecuteReader();
+            if(reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    tbxModelFetch.Text = reader.GetString(1);
+                    tbxBtypeFetch.Text = reader.GetString(2);
+                    tbxPriceFetch.Text =  reader.GetDecimal(3).ToString();
+                   
+                }
+                
+            }
+            else
+            {
+                lblEmptyCart.Text = "Could not fetch vehicle details";
+            }
+
+            con.Close();
+
+        }
+        protected void btnUpdate_Click(object sender, EventArgs e)
+        {
+            con = new SqlConnection(connstr);
+            
+
+            string updateStatement = "Update StockTable set Model = @model, BodyType=@BType, Price=@price where VehicleID=@id";
+            string id = tbxFetch.Text;
+            SqlCommand UpCom = new SqlCommand(updateStatement, con);
+            UpCom.Parameters.AddWithValue("@id",Int32.Parse(id));
+            UpCom.Parameters.AddWithValue("@model", tbxModelFetch.Text);
+            UpCom.Parameters.AddWithValue("@BType", tbxBtypeFetch.Text);
+            UpCom.Parameters.AddWithValue("@price", Decimal.Parse(tbxPriceFetch.Text));
+
+            con.Open();
+            //execute update statement
+            //UpCom.Connection.Open();
+            UpCom.ExecuteNonQuery();
+
+            con.Close();
             string sql_Stock = "SELECT * FROM StockTable";
 
+            con.Open();
             dset = new DataSet();
             adapt = new SqlDataAdapter();
             com = new SqlCommand(sql_Stock, con);
@@ -143,5 +191,7 @@ namespace Volkswagen_Stock_Web_App
 
             con.Close();
         }
+
+        
     }
 }
